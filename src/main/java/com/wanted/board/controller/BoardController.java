@@ -7,9 +7,7 @@ import com.wanted.board.controller.dto.BoardResponse;
 import com.wanted.board.domain.board.service.BoardService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -25,4 +23,14 @@ public class BoardController {
      BoardResponse boardResponse = boardService.addBoard(boardRequest,userId);
      return ResponseUtil.success(boardResponse);
     }
+
+    @PatchMapping("/boards/{boardId}")
+    public SuccessResponse<BoardResponse> updateBoard(
+            @AuthenticationPrincipal Long userId,
+            @PathVariable Long boardId,
+            @RequestBody BoardRequest boardRequest){
+        BoardResponse boardResponse = boardService.updateBoard(boardId,boardRequest,userId);
+        return ResponseUtil.success(boardResponse);
+    }
+
 }

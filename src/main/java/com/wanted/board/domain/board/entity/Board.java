@@ -34,4 +34,10 @@ public class Board extends BaseEntity {
                 .imageUrl(boardRequest.getImageUrl())
                 .build();
     }
+
+    public void updateBoard(BoardRequest boardRequest){
+        if (boardRequest.getTitle() != null) this.title = boardRequest.getTitle();
+        if (boardRequest.getContent() != null) this.content = boardRequest.getContent();
+        if (boardRequest.getImageUrl() != null) this.imageUrl = boardRequest.getImageUrl();
+    }
 }

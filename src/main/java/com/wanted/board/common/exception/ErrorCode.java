@@ -15,6 +15,7 @@ public enum ErrorCode {
     ACCESS_TOKEN_OMISSION(HttpStatus.UNAUTHORIZED, 40101, "인증 정보(액세스 토큰)가 누락되었습니다."),
     EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, 40102, "만료된 액세스 토큰입니다."),
     FORBIDDEN_REQUEST(HttpStatus.FORBIDDEN, 40300, "해당 요청에 대한 권한이 없습니다."),
+    WRONG_BOARD(HttpStatus.NOT_FOUND, 40400, "해당하는 게시글을 찾을 수 없습니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 50000, "예상치 못한 오류가 발생했습니다.");
 
 
