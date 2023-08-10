@@ -60,6 +60,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         ErrorResponse errorResponse = ResponseUtil.error(errorCode);
         String responseJson = objectMapper.writeValueAsString(errorResponse);
 
-        response.getWriter().print(responseJson);	// 한글 출력을 위해 getWriter() 사용
+        response.getWriter().print(responseJson);    // 한글 출력을 위해 getWriter() 사용
     }
 }
