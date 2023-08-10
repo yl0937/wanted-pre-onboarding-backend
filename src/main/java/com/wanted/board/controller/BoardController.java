@@ -15,10 +15,11 @@ import javax.validation.Valid;
 
 @RestController
 @AllArgsConstructor
+@RequestMapping("/boards")
 public class BoardController {
     private final BoardService boardService;
 
-    @PostMapping("/boards")
+    @PostMapping()
     public SuccessResponse<BoardResponse> addBoard(
             @AuthenticationPrincipal Long userId,
             @RequestBody @Valid BoardRequest boardRequest) {
@@ -26,7 +27,7 @@ public class BoardController {
         return ResponseUtil.success(boardResponse);
     }
 
-    @PatchMapping("/boards/{boardId}")
+    @PatchMapping("/{boardId}")
     public SuccessResponse<BoardResponse> updateBoard(
             @AuthenticationPrincipal Long userId,
             @PathVariable Long boardId,
@@ -35,7 +36,7 @@ public class BoardController {
         return ResponseUtil.success(boardResponse);
     }
 
-    @DeleteMapping("/boards/{boardId}")
+    @DeleteMapping("/{boardId}")
     public SuccessResponse<?> deleteBoard(
             @AuthenticationPrincipal Long userId,
             @PathVariable Long boardId) {
@@ -43,7 +44,7 @@ public class BoardController {
         return ResponseUtil.success();
     }
 
-    @GetMapping("/boards")
+    @GetMapping()
     public SuccessResponse<Page<BoardResponse>> readBoardList(
             @RequestParam Integer pageNum
     ) {
@@ -52,4 +53,11 @@ public class BoardController {
         return ResponseUtil.success(boardResponses);
     }
 
+    @GetMapping("/{boardId}")
+    public SuccessResponse<BoardResponse> readOneBoard(
+            @PathVariable Long boardId
+    ) {
+        BoardResponse boardResponse = boardService.readBoard(boardId);
+        return ResponseUtil.success(boardResponse);
+    }
 }

@@ -44,7 +44,7 @@ public class SecurityConfiguration {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/users/auth/**", "/boards").permitAll()
+                .antMatchers("/users/auth/**", "/boards","/boards/{boardId}").permitAll()
                 .anyRequest().hasRole("USER")
 
                 .and()

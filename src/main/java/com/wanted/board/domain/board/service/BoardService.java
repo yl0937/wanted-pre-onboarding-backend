@@ -57,4 +57,10 @@ public class BoardService {
         return new PageImpl<>(boards.stream()
                 .map(BoardResponse::from).collect(Collectors.toList()));
     }
+
+    public BoardResponse readBoard(Long boardId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new BaseException(ErrorCode.WRONG_BOARD));
+        return BoardResponse.from(board);
+    }
 }
