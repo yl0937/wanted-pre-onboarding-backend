@@ -1,6 +1,5 @@
 spring:
     profiles:
-        include: secret
         active: local
 
     jpa:
