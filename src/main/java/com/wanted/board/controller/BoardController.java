@@ -20,17 +20,25 @@ public class BoardController {
     public SuccessResponse<BoardResponse> addBoard(
             @AuthenticationPrincipal Long userId,
             @RequestBody @Valid BoardRequest boardRequest) {
-     BoardResponse boardResponse = boardService.addBoard(boardRequest,userId);
-     return ResponseUtil.success(boardResponse);
+        BoardResponse boardResponse = boardService.addBoard(boardRequest, userId);
+        return ResponseUtil.success(boardResponse);
     }
 
     @PatchMapping("/boards/{boardId}")
     public SuccessResponse<BoardResponse> updateBoard(
             @AuthenticationPrincipal Long userId,
             @PathVariable Long boardId,
-            @RequestBody BoardRequest boardRequest){
-        BoardResponse boardResponse = boardService.updateBoard(boardId,boardRequest,userId);
+            @RequestBody BoardRequest boardRequest) {
+        BoardResponse boardResponse = boardService.updateBoard(boardId, boardRequest, userId);
         return ResponseUtil.success(boardResponse);
+    }
+
+    @DeleteMapping("/boards/{boardId}")
+    public SuccessResponse<?> deleteBoard(
+            @AuthenticationPrincipal Long userId,
+            @PathVariable Long boardId) {
+        boardService.deleteBoard(boardId,userId);
+        return ResponseUtil.success();
     }
 
 }

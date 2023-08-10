@@ -20,20 +20,30 @@ public class BoardService {
     private final UserRepository userRepository;
 
     @Transactional
-    public BoardResponse addBoard(BoardRequest boardRequest, Long userId){
+    public BoardResponse addBoard(BoardRequest boardRequest, Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(()-> new BaseException(ErrorCode.USER_NOT_FOUND));
-        return BoardResponse.from(boardRepository.save(Board.from(boardRequest,user)));
+                .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
+        return BoardResponse.from(boardRepository.save(Board.from(boardRequest, user)));
     }
 
     @Transactional
-    public BoardResponse updateBoard(Long boardId, BoardRequest request, Long userId){
+    public BoardResponse updateBoard(Long boardId, BoardRequest request, Long userId) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BaseException(ErrorCode.WRONG_BOARD));
         if (!userId.equals(board.getUser().getId())) {
-            throw new BaseException(ErrorCode.FORBIDDEN_REQUEST,"게시판 작성자가 아닙니다.");
+            throw new BaseException(ErrorCode.FORBIDDEN_REQUEST, "게시판 작성자가 아닙니다.");
         }
         board.updateBoard(request);
         return BoardResponse.from(boardRepository.save(board));
+    }
+
+    @Transactional
+    public void deleteBoard(Long boardId, Long userId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new BaseException(ErrorCode.WRONG_BOARD));
+        if (!userId.equals(board.getUser().getId())) {
+            throw new BaseException(ErrorCode.FORBIDDEN_REQUEST, "게시판 작성자가 아닙니다.");
+        }
+        boardRepository.delete(board);
     }
 }
