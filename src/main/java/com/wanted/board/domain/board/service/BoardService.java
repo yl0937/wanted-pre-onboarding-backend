@@ -9,8 +9,13 @@ import com.wanted.board.domain.board.repository.BoardRepository;
 import com.wanted.board.domain.user.entity.User;
 import com.wanted.board.domain.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -45,5 +50,11 @@ public class BoardService {
             throw new BaseException(ErrorCode.FORBIDDEN_REQUEST, "게시판 작성자가 아닙니다.");
         }
         boardRepository.delete(board);
+    }
+
+    public Page<BoardResponse> readBoardList(PageRequest pageRequest){
+        Page<Board> boards = boardRepository.findAll(pageRequest);
+        return new PageImpl<>(boards.stream()
+                .map(BoardResponse::from).collect(Collectors.toList()));
     }
 }
