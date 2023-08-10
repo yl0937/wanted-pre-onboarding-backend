@@ -47,7 +47,7 @@ public class BoardController {
     public SuccessResponse<Page<BoardResponse>> readBoardList(
             @RequestParam Integer pageNum
     ) {
-        PageRequest pageRequest = PageRequest.of(pageNum,10);
+        PageRequest pageRequest = PageRequest.of(pageNum, 10);
         Page<BoardResponse> boardResponses = boardService.readBoardList(pageRequest);
         return ResponseUtil.success(boardResponses);
     }

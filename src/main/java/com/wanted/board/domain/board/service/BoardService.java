@@ -52,7 +52,7 @@ public class BoardService {
         boardRepository.delete(board);
     }
 
-    public Page<BoardResponse> readBoardList(PageRequest pageRequest){
+    public Page<BoardResponse> readBoardList(PageRequest pageRequest) {
         Page<Board> boards = boardRepository.findAll(pageRequest);
         return new PageImpl<>(boards.stream()
                 .map(BoardResponse::from).collect(Collectors.toList()));
