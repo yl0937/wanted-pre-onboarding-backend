@@ -37,7 +37,7 @@ public class BoardController {
     public SuccessResponse<?> deleteBoard(
             @AuthenticationPrincipal Long userId,
             @PathVariable Long boardId) {
-        boardService.deleteBoard(boardId,userId);
+        boardService.deleteBoard(boardId, userId);
         return ResponseUtil.success();
     }
 

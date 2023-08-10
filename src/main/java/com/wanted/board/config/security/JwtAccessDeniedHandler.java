@@ -24,6 +24,6 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
         ErrorResponse errorResponse = ResponseUtil.error(ErrorCode.FORBIDDEN_REQUEST);
         String responseJson = objectMapper.writeValueAsString(errorResponse);
 
-        response.getWriter().print(responseJson);	// 한글 출력을 위해 getWriter() 사용
+        response.getWriter().print(responseJson);    // 한글 출력을 위해 getWriter() 사용
     }
 }

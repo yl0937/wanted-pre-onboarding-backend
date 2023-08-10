@@ -26,7 +26,6 @@ public class JwtProvider {
     private final Key secretKey;
 
 
-
     public JwtProvider(
             UserDetailsService userDetailsService,
             @Value("${jwt.secret}") String secretKey
