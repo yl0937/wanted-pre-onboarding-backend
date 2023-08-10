@@ -253,7 +253,32 @@ class BoardServiceTest {
 
         // then
         assertEquals(boardResponsePage.getSize(), 2);
+    }
 
+    @Test
+    @DisplayName("게시글 개별 조회 : 성공")
+    void boardReadOne() {
+        // given
+        User mockUser = User.builder()
+                .id(1L)
+                .email("test@gmail.com")
+                .password("12345678")
+                .build();
+        Board mockBoard = Board.builder()
+                .id(1L)
+                .title("test")
+                .content("test")
+                .user(mockUser)
+                .build();
+
+        given(boardRepository.findById(anyLong())).willReturn(Optional.of(mockBoard));
+
+        // when
+        BoardResponse boardResponse = boardService.readBoard(mockBoard.getId());
+
+        // then
+        assertEquals(boardResponse.getTitle(),"test");
+        assertEquals(boardResponse.getUserName(),"test@gmail.com");
     }
 
 
