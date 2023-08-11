@@ -2,7 +2,40 @@
 # 성명 
 허예림
 # AWS 환경
+주소 : http://3.36.90.161:8080
+
+![image](https://github.com/yl0937/wanted-pre-onboarding-backend/assets/60501504/69ad5386-b63c-471d-8786-1f564700d56b)
+
 # 애플리케이션의 실행 방법
+- application-local.yml
+```
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/board?serverTimezone=Asia/Seoul
+    username: {사용자 이름}
+    password: {사용자 비밀번호}
+```
+- application-secret.yml 구성
+```
+jwt:
+  secret: {secret 구성}
+```
+- clone
+```
+git clone https://github.com/yl0937/wanted-pre-onboarding-backend.git
+```
+- gradle build
+```
+cd wanted-pre-onboarding-backend
+chmod 755 gradlew
+./gradlew clean build
+```
+- jar 실행
+```
+cd build/libs
+java -jar pre-onboarding-0.0.1-SNAPSHOT.jar
+```
 # 데이터 베이스 테이블 구조
 ![image](https://github.com/yl0937/wanted-pre-onboarding-backend/assets/60501504/ab7a23b1-12ef-4bae-a2c2-a6cd0713c28a)
 
@@ -10,14 +43,14 @@
 https://youtu.be/1wl6pp7OVf0
 # 구현 방법 및 이유에 대한 간력한 설명
 - user
-  - 회원가입 : @Email 어노테이션을 사용해 이메일 형식을 검증하고, @Notblank를 사용해 필수 입력 하도록 구성, 비밀번호도 마찬가지로 @Notblank와 @Size(min = 8) 어노테이션을 사용하여 비밀번호를 8자리 이상으로 필수 입력하도록 구성, SignUpRequest dto를 생성하여 회원 가입 진행시 @valid를 통해 유효성 검사, 중복 이메일 검증
-  - 로그인 : 회원 가입과 마찬가지로 이메일, 패스워드를 필수로 입력하고 8자리 이상으로 구성하도록 유효성 검사 진행, 사용하여 SecurityConfig 에 PasswordEncorder 를 Bean등록 후 암호화 후 저장.
+  - 회원가입 : @Email 어노테이션을 사용해 이메일 형식을 검증하고, @Notblank를 사용해 필수 입력 하도록 구성, 비밀번호도 마찬가지로 @Notblank와 @Size(min = 8) 어노테이션을 사용하여 비밀번호를 8자리 이상으로 필수 입력하도록 구성, SignUpRequest dto를 생성하여 회원 가입 진행시 @valid를 통해 유효성 검사, 형식 검증 완료 후 데이터 베이스 내에 중복으로 가입된 이메일이 있는 지 조회 후 회원 가입 진행
+  - 로그인 : 회원 가입과 마찬가지로 이메일, 패스워드를 필수로 입력하고 8자리 이상으로 구성하도록 유효성 검사 진행, Spring Security를 사용하여 JwtAuthenticationFilter를 통해 JWT 인증을 처리하도록 구성. JwtAuthenticationFilter 필터는 Authorization 헤더에서 JWT 토큰을 추출하여 Token provider를 통해 검증 진행
 - board
-  - 게시글 생성
-  - 게시글 수정
-  - 게시글 삭제
-  - 게시글 전체 조회
-  - 게시글 개별 조회
+  - 게시글 생성 : 게시글을 작성하는 경우는 로그인이 필요하기 때문에 헤더에 로그인 시 반환된 액세스 토큰을 담아 인증 후 사용 가능. 헤더에 Authorization : Bearer {액세스 토큰}을 담아 사용. content와 title은 필수 요소라고 판단하여 NOTBlank로 유효성 검사 진행 후 게시글 생성
+  - 게시글 수정 : 게시글 수정도 자신이 작성한 글만 수정 가능하도록 구성해야 하기 때문에 게시글 생성과 마찬가지로 액세스 토큰으로 검증 후 사용, JWT 토큰에 담긴 유저 정보를 조회하여 해당 게시글을 작성한 유저와 동일하다고 판단하면 수정이 가능. 게시글 작성이 아닌 수정이기 때문에 content,혹은 title 중 공백으로 요청되지 않은 데이터에 한해서 수정을 진행. 게시글 수정은 기본적으로 존재하는 게시글 데이터를 기반으로 이루어지기 때문에 수정 요청 시 해당 아이디의 게시글이 있는 지 조회.
+  - 게시글 삭제 : 게시글 삭제 또한 자신이 작성한 글만 삭제가 가능해야하기 때문에 액세스 토큰으로 검증 후 사용, JWT 토큰에 담긴 유저 정보를 조회하여 해당 게시글을 작성한 유저와 동일하다고 판단하면 수정이 가능. 삭제 요청 시 해당 아이디의 게시글이 있는 지 조회
+  - 게시글 전체 조회 : 게시글 전체 조회의 경우 생성,삭제,수정과는 달리 회원 인증을 진행할 필요가 없다고 판단하여 유저 인증 없이도 조회 가능. request param으로 pageNum을 사용하여 페이징
+  - 게시글 개별 조회 : 게시글 개별 조회 또한 회원 인증을 진행하지 않으며, 해당 게시글이 존재하는 게시글인지 조회
 # API 명세
 - 회원 가입
   - method : post
