@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 public class SignInRequest {
 
     @Email
+    @NotBlank
     private String email;
     @NotBlank
     @Size(min = 8)
