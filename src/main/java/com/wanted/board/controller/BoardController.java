@@ -19,7 +19,7 @@ import javax.validation.Valid;
 public class BoardController {
     private final BoardService boardService;
 
-    @PostMapping()
+    @PostMapping("")
     public SuccessResponse<BoardResponse> addBoard(
             @AuthenticationPrincipal Long userId,
             @RequestBody @Valid BoardRequest boardRequest) {
@@ -44,7 +44,7 @@ public class BoardController {
         return ResponseUtil.success();
     }
 
-    @GetMapping()
+    @GetMapping("/read")
     public SuccessResponse<Page<BoardResponse>> readBoardList(
             @RequestParam Integer pageNum
     ) {
@@ -53,7 +53,7 @@ public class BoardController {
         return ResponseUtil.success(boardResponses);
     }
 
-    @GetMapping("/{boardId}")
+    @GetMapping("/read/{boardId}")
     public SuccessResponse<BoardResponse> readOneBoard(
             @PathVariable Long boardId
     ) {
